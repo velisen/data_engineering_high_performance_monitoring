@@ -11,7 +11,10 @@ import java.util.concurrent.TimeUnit;
 
 public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
-    private static final String KAFKA_BROKERS = System.getenv().getOrDefault("KAFKA_BROKERS", "localhost:29092,localhost:39092,localhost:49092");
+    private static final String KAFKA_BROKERS = System.getenv().getOrDefault(
+        "KAFKA_BROKERS",
+        "kafka-broker-1:19092,kafka-broker-2:19092,kafka-broker-3:19092"
+    );
     private static final int NUM_PARTITIONS = 5;
     private static final short REPLICATION_FACTOR = 3;
     private static final String TOPIC_NAME = "FINANCIAL_TRANSACTIONS";
