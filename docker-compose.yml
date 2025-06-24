@@ -385,6 +385,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
+      - grafana-data:/var/lib/grafana
       - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards
       - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
     depends_on:
@@ -392,14 +393,56 @@ services:
     networks:
       - michal
 
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.1
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+    networks:
+      - michal
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.11.1
+    container_name: kibana
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
+    ports:
+      - "5601:5601"
+    networks:
+      - michal
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:8.12.2
+    container_name: filebeat
+    user: root
+    command: |
+      /bin/bash -c "
+      chmod go-w /usr/share/filebeat/filebeat.yml && 
+      filebeat -e --strict.perms=false
+      "
+    volumes:
+      - ./monitoring/elk/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml
+      - ./controller-logs_1:/var/log/controller-logs-1:ro
+      - ./controller-logs_2:/var/log/controller-logs-2:ro
+      - ./controller-logs_3:/var/log/controller-logs-3:ro
+      - ./broker-logs_1:/var/log/broker-logs-1:ro
+      - ./broker-logs_2:/var/log/broker-logs-2:ro
+      - ./broker-logs_3:/var/log/broker-logs-3:ro
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    networks:
+      - michal
+    depends_on:
+      - elasticsearch
+
 networks:
   michal:
 volumes:
-  controller_data_1:
-  controller_data_2:
-  controller_data_3:
-  broker_data_1:
-  broker_data_2:
-  broker_data_3:
+  grafana-data:
 
 
