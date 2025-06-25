@@ -1,5 +1,7 @@
 # Kafka, Spark, ELK, and Monitoring Stack with Docker Compose
 
+<img src="diagram-export-25.06.2025-16_30_27.png">
+
 This project sets up a full-featured data streaming and monitoring environment using Docker Compose. It includes a multi-broker, multi-controller Apache Kafka cluster (KRaft mode), Spark, Schema Registry, Redpanda Console, Java producer, Prometheus, Alertmanager, Grafana, Elasticsearch, Kibana, Filebeat, and Logstash.
 
 ## Features
