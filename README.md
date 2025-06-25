@@ -64,15 +64,3 @@ This project sets up a full-featured data streaming and monitoring environment u
 - If Elasticsearch OOMs, adjust JVM heap size in the `elasticsearch` service.
 - For log visibility in Kibana, ensure index pattern matches `kafka-logs-filebeat-*`.
 
-## Customization
-- Add your own Spark jobs to the `jobs/` directory.
-- Modify alert rules in `monitoring/prometheus/rules/alert_rules.yml`.
-- Extend Logstash pipelines for advanced log parsing.
-
-## Stopping and Cleaning Up
-```sh
-docker-compose down -v
-```
-
-## License
-MIT
